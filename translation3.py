@@ -17,20 +17,37 @@ def translate_text(user_input, excel_file_path):
     return '\n'.join(translated_lines)
 
 
-# 사용자로부터 여러 줄의 텍스트 입력 받기
-print("번역할 텍스트를 입력하세요 (입력이 끝나면 Ctrl+D (Unix) 또는 Ctrl+Z 후 Enter (Windows)를 누르세요):")
-user_input_lines = []
-try:
+# def get_user_input():
+#     print("\n번역할 텍스트를 입력하세요 (입력이 끝나면 Ctrl+D (Unix) 또는 Ctrl+Z 후 Enter (Windows)를 누르세요, 종료하려면 '종료' 입력):")
+#     user_input_lines = []
+#     try:
+#         while True:
+#             line = input()
+#             if line.strip().lower() == '종료':
+#                 return None
+#             user_input_lines.append(line)
+#     except EOFError:
+#         pass
+#     return '\n'.join(user_input_lines)
+
+def get_user_input():
+    print("\n번역할 텍스트를 붙여넣고 Enter를 누르세요 (프로그램을 종료하려면 '종료'를 입력하세요):")
+    user_input = input()
+    if user_input.strip().lower() == '종료':
+        return None
+    return user_input
+
+def main():
+    excel_file_path = r"C:\Users\USER\Desktop\translation\translation_data.xlsx"
+
     while True:
-        line = input()
-        user_input_lines.append(line)
-except EOFError:
-    pass
+        user_input = get_user_input()
+        if user_input is None:
+            break
 
-user_input = '\n'.join(user_input_lines)
-excel_file_path = r"C:\Users\USER\Desktop\translation\translation_data.xlsx"
+        translated_text = translate_text(user_input, excel_file_path)
+        pyperclip.copy(translated_text)
+        print("번역된 텍스트가 클립보드에 복사되었습니다.")
 
-# 번역 실행
-translated_text = translate_text(user_input, excel_file_path)
-pyperclip.copy(translated_text)
-print("번역된 텍스트가 클립보드에 복사되었습니다.")
+if __name__ == "__main__":
+    main()
